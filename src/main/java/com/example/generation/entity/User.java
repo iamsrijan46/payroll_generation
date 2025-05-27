@@ -3,6 +3,7 @@ package com.example.generation.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -16,14 +17,19 @@ public class User {
 
     private String password;
 
-    public User() {
-    }
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public User(String username, String email, String password) {
+    public User() {}
+
+    public User(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
+
+    // Getters and setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -36,4 +42,7 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 }

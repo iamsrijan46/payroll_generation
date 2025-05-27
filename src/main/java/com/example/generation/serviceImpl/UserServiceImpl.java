@@ -3,6 +3,7 @@ package com.example.generation.serviceImpl;
 import com.example.generation.dto.AuthResponse;
 import com.example.generation.dto.LoginRequest;
 import com.example.generation.dto.SignupRequest;
+import com.example.generation.entity.Role;
 import com.example.generation.entity.User;
 import com.example.generation.repository.UserRepository;
 import com.example.generation.service.UserService;
@@ -27,10 +28,18 @@ public class UserServiceImpl implements UserService {
             return new AuthResponse("Username is already taken!");
         }
 
+        Role role;
+        try {
+            role = Role.valueOf(request.getRole().toUpperCase());
+        } catch (Exception e) {
+            return new AuthResponse("Invalid role specified!");
+        }
+
         User user = new User(
                 request.getUsername(),
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword())
+                passwordEncoder.encode(request.getPassword()),
+                role
         );
 
         userRepository.save(user);
@@ -50,6 +59,6 @@ public class UserServiceImpl implements UserService {
             return new AuthResponse("Invalid username or password");
         }
 
-        return new AuthResponse("Login successful");
+        return new AuthResponse("Login successful", user.getRole().name());
     }
 }
