@@ -20,9 +20,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        // Protect these paths by role, example:
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/employee/**").hasRole("EMPLOYEE")
+                        .requestMatchers("/api/employees/**").hasRole("ADMIN") // Admin can access all employee-related routes
+                        .requestMatchers("/api/employees").hasRole("ADMIN")
+                        .requestMatchers("/api/generate-payroll/**").hasRole("ADMIN") // use /** in case of ID params
                         .anyRequest().authenticated()
                 );
 
